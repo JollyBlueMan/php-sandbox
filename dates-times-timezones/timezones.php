@@ -21,8 +21,6 @@ $timezones = [
     new \DateTimeZone('America/Toronto'),
     new \DateTimeZone('Australia/Sydney'),
 ];
-
-echo 'Timezones: ' . PHP_EOL;
 foreach ($timezones as $timezone) {
     $datetime->setTimezone($timezone);
     echo "{$timezone->getName()}:\t{$datetime->format('Y-m-d H:i:s')} ({$timezone->getOffset($local)})" . PHP_EOL;
