@@ -1,0 +1,32 @@
+{
+    "name": "jollyblueman/urlvalidator",
+    "description": "UrlValidator - ur rly lyv validator | Scan URLs from a csv file to find inaccessible URLs",
+    "keywords": ["url", "scanner", "csv"],
+    "homepage": "https://jollyblueman.com",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Tom Wilford",
+            "homepage": "https://jollyblueman.com",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "email": "hello@jollyblueman.com"
+    },
+    "require": {
+        "php" : ">=5.4.0",
+        "guzzlehttp/guzzle": "^7.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "9.5.7"
+    },
+    "suggest": {
+        "league/csv": "^9.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "JollyBlueMan\\UrlValidator\\": "src/"
+        }
+    }
+}

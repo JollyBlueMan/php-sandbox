@@ -1,0 +1,15 @@
+{
+    "name": "jollyblueman/csv-scan--http",
+    "description": "Code example from Modern PHP",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Tom Wilford",
+            "email": "hello@jollyblueman.com"
+        }
+    ],
+    "require": {
+        "guzzlehttp/guzzle": "^7.3",
+        "league/csv": "^9.7"
+    }
+}
