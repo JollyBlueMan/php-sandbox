@@ -1,0 +1,14 @@
+{
+    "name": "jollyblueman/thumper",
+    "description": "Thumper, a simple mysql CLI dumper.",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Tom Wilford",
+            "email": "hello@jollyblueman.com"
+        }
+    ],
+    "require": {
+        "ifsnop/mysqldump-php": "^2.9"
+    }
+}
