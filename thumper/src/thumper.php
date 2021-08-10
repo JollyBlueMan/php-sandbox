@@ -3,11 +3,13 @@ require '../vendor/autoload.php';
 
 use Ifsnop\Mysqldump as IMysqldump;
 
-$credentials = [
-    'host'     => 'localhost',
-    'database' => 'thumper_test',
-    'username' => 'test',
-    'password' => 'test'
+$credentials = [];
+
+$credentialsFilters = [
+    'host'     => FILTER_SANITIZE_ENCODED,
+    'database' => FILTER_SANITIZE_STRING,
+    'username' => FILTER_SANITIZE_STRING,
+    'password' => FILTER_SANITIZE_STRING
 ];
 
 $dumperSettings = [
@@ -30,33 +32,46 @@ if ($argc == 1) {
     $options = getopt($shortOpts, $longOpts);
 
     $database    = $options['d'] ?? $options['database'] ?? false;
+    // validate filepath
     if ($database === false) {
         echoManPage();
     } else {
         require $database;
     }
 
-    //localhost thumper_test test test
-    $dumper = new IMysqldump\Mysqldump("mysql:host={$credentials['host']};dbname={$credentials['database']}", $credentials['username'], $credentials['test']);
+    $credentials = filter_var_array($credentials, $credentialsFilters);
+    if ($credentials === false) {
+        echoManPage();
+    }
+
+    $dumper = new IMysqldump\Mysqldump("mysql:host={$credentials['host']};dbname={$credentials['database']}", $credentials['username'], $credentials['password']);
+
+    $wheres = $options['w'] ?? $options['where'] ?? false;
+    // validate filepath
+    if ($wheres !== false) {
+        $arguments = json_decode(file_get_contents($wheres), JSON_OBJECT_AS_ARRAY);
+        // validate/sanitise wheres
+        $dumper->setTableWheres($arguments);
+    }
 
     $dumper->setInfoHook(function($object, $info) {
         if ($object === 'table') {
-            // change to monolog
+            // change to log
             echo $info['name'], $info['rowCount'];
         }
     });
 
-    $wheres = $options['w'] ?? $options['where'] ?? false;
-    if ($wheres) {
-        $dumper->setTableWheres(json_decode($wheres));
-    }
-
-    $dumper->start('storage/work/dump.sql');
+    $dumper->start('output.sql');
 
     // log completion
 }
 
 function echoManPage() {
-    echo("Thumper...");
+    echo("
+    Thumper...\r\n
+    MySQL dumps with wheres\r\n
+    ----------------------------
+    -d || --database  Path to php file with database credentials\r\n
+    -w || --where     Path to json file with where arguments");
     die;
 }

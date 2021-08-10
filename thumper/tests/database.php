@@ -1,4 +1,5 @@
 <?php
+// Execute arbitrary code to retrieve credentials
 
 $credentials = [
     'host'     => 'localhost',
