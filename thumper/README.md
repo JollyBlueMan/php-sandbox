@@ -1,12 +1,12 @@
-#Thumper (dumper)
-##Description
+# Thumper (dumper)
+## Description
 Thumper, a simple mysql CLI dumper.
 
-##Installation Instructions
+## Installation Instructions
 1. Clone the project.
 2. Run `composer install`
    
-##Usage Instructions
+## Usage Instructions
 1. ??
 
 
