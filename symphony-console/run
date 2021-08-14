@@ -1,0 +1,14 @@
+#!/usr/bin/env php
+<?php
+require __DIR__ . '/vendor/autoload.php';
+
+use Symfony\Component\Console\Application;
+
+$app = new Application();
+
+// php run console:create-user
+$app->add(new \JollyBlueMan\Console\Command\CreateUserCommand());
+// php run console:my-command
+$app->add(new \JollyBlueMan\Console\Command\MyCommand());
+
+$app->run();
