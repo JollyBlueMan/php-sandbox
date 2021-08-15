@@ -8,6 +8,9 @@ $app = new Application();
 
 // php run console:create-user
 $app->add(new \JollyBlueMan\Console\Command\CreateUserCommand());
+// php run console:greet
+$app->add(new \JollyBlueMan\Console\Command\GreetCommand());
+
 // php run console:my-command
 $app->add(new \JollyBlueMan\Console\Command\MyCommand());
 

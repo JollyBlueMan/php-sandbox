@@ -14,8 +14,10 @@ class MyCommand extends Command
     protected function configure(): void
     {
         $this
+            ->setHidden(true) // Hides command from suggestions/list
             ->setDescription('MyCommand is like me...')
-            ->setHelp('It does nothing!');
+            ->setHelp('It does nothing of any worth!')
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -41,7 +43,7 @@ class MyCommand extends Command
         $section2->clear();
         sleep(2);
 
-        // removes given number of lines (aka everything including Goodbye\n
+        // removes given number of lines (aka everything including Goodbye\n)
         $section1->clear(2);
         sleep(2);
 
