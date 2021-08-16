@@ -18,6 +18,8 @@ class MyCommand extends Command
             ->setDescription('MyCommand is like me...')
             ->setHelp('It does nothing of any worth!')
         ;
+        //$this->addOption("--yell", "-y",InputArgument::OPTIONAL, "The volume in which the greeting should be typed.");
+
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -25,6 +27,9 @@ class MyCommand extends Command
         if (!$output instanceof ConsoleOutputInterface) {
             throw new \LogicException("This command accepts only an instance of 'ConsoleOutputInterface'.");
         }
+        /*if ($input->getOption("--yell")) {
+            $greeting = strtoupper($text);
+        }*/
 
         // establish 2 sections
         $section1 = $output->section();

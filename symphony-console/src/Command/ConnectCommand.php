@@ -1,6 +1,7 @@
 <?php
 namespace JollyBlueMan\Console\Command;
 
+use JollyBlueMan\Console\UtilityBelt\Credentials;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
@@ -8,18 +9,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class CreateUserCommand extends Command
+class ConnectCommand extends Command
 {
-    protected static $defaultName = "console:create-user";
-
-    private bool $requirePassword;
-
-    public function __construct(bool $requirePassword = false)
-    {
-        $this->requirePassword = $requirePassword;
-
-        parent::__construct();
-    }
+    protected static $defaultName = "console:connect";
 
     protected function configure(): void
     {
@@ -29,7 +21,7 @@ class CreateUserCommand extends Command
         ;
 
         $this->addArgument('username', InputArgument::REQUIRED, 'The username of the user.');
-        $this->addArgument('password', $this->requirePassword ? InputArgument::REQUIRED : InputArgument::OPTIONAL, 'User password');
+        $this->addArgument('password', InputArgument::OPTIONAL, 'User password');
     }
 
     protected function initialize(InputInterface $input, OutputInterface $output): void
@@ -86,13 +78,16 @@ class CreateUserCommand extends Command
         sleep(1);
         $section->overwrite("<comment>...decrypting...</comment>");
         sleep(2);
-        $section->overwrite("<comment>Chi:(ord(UNAME)*ord(AUTH))</comment>");
+        $section->overwrite("<comment>Chi:(os-inancesurvey(UNAME)*os-inancesurvey(AUTH))</comment>");
+        sleep(1);
+        $section->overwrite("<comment>Upsilon:(str_replace(UNAME,CONTROL)/chr(AUTH++))</comment>");
+        sleep(1);
+        $section->overwrite("<comment>Zeta:(base_encode(UNAME,CONTROL,2)+fopen(SEC))</comment>");
         sleep(1);
         $section->overwrite("<comment>...decrypting...</comment>");
         sleep(2);
 
-        $info = $this->getCredentials();
-        if ($password != (ord(json_decode(file_get_contents(__DIR__."/../../{$info['0']}.{$info[1]}"), true)[$info[2]]) * ord($username))) {
+        if (Credentials::validateLogin($username, $password) == false) {
             $section->overwrite("<error>Decryption error.</error>");
             sleep(1);
             $section->overwrite("<error>Running cleanup routine...</error>");
@@ -115,7 +110,8 @@ class CreateUserCommand extends Command
 
         $command    = $this->getApplication()->find("console:greet");
         $greetInput = new ArrayInput([
-            'username'   => $username,
+            'username' => $username,
+            'password' => $password
         ]);
         $returnCode = $command->run($greetInput, $output);
 
@@ -135,7 +131,9 @@ class CreateUserCommand extends Command
     private function getCredentials(): array
     {
         return [
+            "/../../",
             $this->decipher([3,15,13,16,15,19,5,18]),
+            ".",
             $this->decipher([10,19,15,14]),
             $this->decipher([14,1,13,5])
         ];

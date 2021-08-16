@@ -6,8 +6,8 @@ use Symfony\Component\Console\Application;
 
 $app = new Application();
 
-// php run console:create-user
-$app->add(new \JollyBlueMan\Console\Command\CreateUserCommand());
+// php run console:connect
+$app->add(new \JollyBlueMan\Console\Command\ConnectCommand());
 // php run console:greet
 $app->add(new \JollyBlueMan\Console\Command\GreetCommand());
 

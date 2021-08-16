@@ -2,6 +2,7 @@
 
 namespace JollyBlueMan\Console\Command;
 
+use JollyBlueMan\Console\UtilityBelt\Credentials;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -15,20 +16,22 @@ class GreetCommand extends Command
     {
         $this
             ->setDescription("Greets a user.")
-            ->setHelp("Authenticated users can be greeted by this.")
+            ->setHelp("All users can be greeted by this.")
         ;
 
-        $this->addArgument("username", InputArgument::REQUIRED, "The user's username.");
-        //$this->addOption("--yell", "-y",InputArgument::OPTIONAL, "The volume in which the greeting should be typed.");
+        $this->addArgument('username', InputArgument::REQUIRED, 'The username of the user.');
+        $this->addArgument('password', InputArgument::OPTIONAL, 'User password');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $greeting = "Welcome Phantom Program Initiate, " . $input->getArgument("username");
-        /*if ($input->getOption("--yell")) {
-            $greeting = strtoupper($greeting);
-        }*/
+        $username = $input->getArgument("username");
+        $password = $input->getArgument("password");
 
+        $greeting = "Please connect before accessing the program.";
+        if (Credentials::validateLogin($username, $password) == true) {
+            $greeting = "Welcome Phantom Program, " . $username;
+        }
         $output->writeln($greeting);
 
         return Command::SUCCESS;
