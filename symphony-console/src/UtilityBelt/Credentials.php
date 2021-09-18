@@ -14,7 +14,7 @@ class Credentials
         return false;
     }
 
-    private static function decipher($input): string
+    public static function decipher($input): string
     {
         $output = "";
         foreach ($input as $item) {
@@ -35,4 +35,13 @@ class Credentials
         ];
     }
 
+    public static function verifyElevation($elevationCode): int
+    {
+        switch ($elevationCode) {
+            case 1337:
+                return 1;
+            default:
+                return 0;
+        }
+    }
 }

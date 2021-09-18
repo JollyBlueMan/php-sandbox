@@ -2,6 +2,7 @@
 
 namespace JollyBlueMan\Console\Command;
 
+use JollyBlueMan\Console\Output\Message;
 use JollyBlueMan\Console\UtilityBelt\Credentials;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -10,7 +11,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class GreetCommand extends Command
 {
-    protected static $defaultName = "console:greet";
+    protected static string $defaultName = "console:greet";
+    protected bool $authenticated = false;
 
     protected function configure(): void
     {
@@ -30,9 +32,14 @@ class GreetCommand extends Command
 
         $greeting = "Please connect before accessing the program.";
         if (Credentials::validateLogin($username, $password) == true) {
-            $greeting = "Welcome Phantom Program, " . $username;
+            $greeting = "Welcome to the Phantom Program, " . $username;
+            $this->authenticated = true;
         }
         $output->writeln($greeting);
+
+        if ($this->authenticated == true) {
+            $output->writeln(Message::retrieve("greet.event.a"));
+        }
 
         return Command::SUCCESS;
     }
