@@ -10,7 +10,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ConnectCommand extends Command
+class ConnectCommand extends ConsoleCommand
 {
     protected static string $defaultName = "console:connect";
     protected int $elevationLevel;
@@ -62,7 +62,7 @@ class ConnectCommand extends Command
             throw new \LogicException("This command accepts only an instance of 'ConsoleOutputInterface'.");
         }
 
-        if ($this->elevationLevel > 1) {
+        if ($this->elevationLevel < 2) {
             $hash = password_hash((new \DateTime())->format("Y-m-d"), PASSWORD_DEFAULT);
             $section = $output->section();
             $section->write("<info>Initialised - {$hash}</info>");
@@ -76,33 +76,36 @@ class ConnectCommand extends Command
     {
         $username = strtolower($input->getArgument('username'));
         $password = $input->getArgument('password');
+        $elevation = $this->elevationLevel;
 
         $output->writeln([
             "<info>Phantom Program Online</info>",
             "-..- / -- .- .-. -.- ... / - .... . / ... .--. --- -"
         ]);
 
-        if ($this->elevationLevel == 0) {
+        if ($elevation <= 4) {
             $output->write("<question>You are about to </question>");
             $output->write("<question>establish a user connection.</question>\n\n");
-            sleep(1);
+            sleep($elevation < 2 ? 1 : 0);
 
             $output->writeln('Username: ' . $username);
-            sleep(1);
+            sleep($elevation < 2 ? 1 : 0);
 
-            $section = $output->section();
-            $section->write("<comment>Attempting decryption...</comment>");
-            sleep(1);
-            $section->overwrite("<comment>...decrypting...</comment>");
-            sleep(2);
-            $section->overwrite("<comment>Chi:(accord-acc(UNAME)*accord-acc(AUTH))</comment>");
-            sleep(1);
-            $section->overwrite("<comment>Upsilon:(str_replace(UNAME,CONTROL)/chr(AUTH++))</comment>");
-            sleep(1);
-            $section->overwrite("<comment>Zeta:(base_encode(UNAME,CONTROL,2)+fopen(SEC))</comment>");
-            sleep(1);
-            $section->overwrite("<comment>...decrypting...</comment>");
-            sleep(2);
+            if ($elevation < 1) {
+                $section = $output->section();
+                $section->write("<comment>Attempting decryption...</comment>");
+                sleep(1);
+                $section->overwrite("<comment>...decrypting...</comment>");
+                sleep(2);
+                $section->overwrite("<comment>Chi:(accord-acc(UNAME)*accord-acc(AUTH))</comment>");
+                sleep(1);
+                $section->overwrite("<comment>Upsilon:(str_replace(UNAME,CONTROL)/chr(AUTH++))</comment>");
+                sleep(1);
+                $section->overwrite("<comment>Zeta:(base_encode(UNAME,CONTROL,2) . fopen(SEC))</comment>");
+                sleep(1);
+                $section->overwrite("<comment>...decrypting...</comment>");
+                sleep(2);
+            }
         }
 
         if (Credentials::validateLogin($username, $password) == false) {
@@ -117,14 +120,23 @@ class ConnectCommand extends Command
             return Command::INVALID;
         }
 
-        $output->writeln(password_hash($password, PASSWORD_DEFAULT));
-        sleep(1);
+        if ($elevation < 4) {
+            if ($elevation < 3) {
+                $output->writeln(password_hash($password, PASSWORD_DEFAULT));
+                sleep($elevation < 2 ? 1 : 0);
+                $output->write($this->thinkingAboutIt());
+            }
+            $output->writeln("<comment>Secure connection established.</comment>");
+            sleep($elevation < 2 ? 1 : 0);
 
-        $output->write($this->thinkingAboutIt());
-        $output->writeln("<comment>Secure connection established.</comment>");
-        sleep(1);
+            if ($elevation < 2) {
+                $output->write($this->thinkingAboutIt());
+            }
+        }
 
-        $output->write($this->thinkingAboutIt());
+        $this->session->set("username", $username);
+        $this->session->set("password", $password);
+        $this->session->set("elevation", $elevation);
 
         $command    = $this->getApplication()->find("console:greet");
         $greetInput = new ArrayInput([

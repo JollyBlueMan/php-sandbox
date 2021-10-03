@@ -4,15 +4,17 @@ namespace JollyBlueMan\Console\Command;
 
 use JollyBlueMan\Console\Output\Message;
 use JollyBlueMan\Console\UtilityBelt\Credentials;
+use JollyBlueMan\Console\UtilityBelt\Session;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class GreetCommand extends Command
+class GreetCommand extends ConsoleCommand
 {
     protected static string $defaultName = "console:greet";
     protected bool $authenticated = false;
+    protected Session $session;
 
     protected function configure(): void
     {
@@ -27,8 +29,8 @@ class GreetCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $username = $input->getArgument("username");
-        $password = $input->getArgument("password");
+        $username = $input->getArgument("username") ?? $this->session->get("username");
+        $password = $input->getArgument("password") ?? $this->session->get("password");
 
         $greeting = "Please connect before accessing the program.";
         if (Credentials::validateLogin($username, $password) == true) {
@@ -38,7 +40,18 @@ class GreetCommand extends Command
         $output->writeln($greeting);
 
         if ($this->authenticated == true) {
-            $output->writeln(Message::retrieve("greet.event.a"));
+            $section = $output->section();
+
+            $section->write(Message::retrieve("greet.event.a"));
+            sleep(1);
+
+            $section->overwrite(Message::retrieve("greet.event.b"));
+            sleep(1);
+
+            $section->overwrite(Message::retrieve("greet.event.c"));
+            sleep(1);
+
+            $section->clear();
         }
 
         return Command::SUCCESS;

@@ -35,10 +35,16 @@ class Credentials
         ];
     }
 
-    public static function verifyElevation($elevationCode): int
+    public static function verifyElevation(int $elevationCode): int
     {
         switch ($elevationCode) {
-            case 1337:
+            case (int) (round(12309*(1-.3456))):
+                return 4;
+            case (int) (round(2043*(1-.3456))):
+                return 3;
+            case (int) (round(6409*(1-.3456))):
+                return 2;
+            case (int) (round(12796*(1-.3456))):
                 return 1;
             default:
                 return 0;

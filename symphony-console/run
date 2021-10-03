@@ -2,16 +2,20 @@
 <?php
 require __DIR__ . '/vendor/autoload.php';
 
+use JollyBlueMan\Console\UtilityBelt\Session;
 use Symfony\Component\Console\Application;
 
 $app = new Application();
+$session = new Session();
 
 // php run console:connect
-$app->add(new \JollyBlueMan\Console\Command\ConnectCommand());
+$app->add(new \JollyBlueMan\Console\Command\ConnectCommand($session));
 // php run console:greet
-$app->add(new \JollyBlueMan\Console\Command\GreetCommand());
+$app->add(new \JollyBlueMan\Console\Command\GreetCommand($session));
+// php run console:report
+$app->add(new \JollyBlueMan\Console\Command\ReportCommand());
 
-// php run console:my-command
-$app->add(new \JollyBlueMan\Console\Command\MyCommand());
+// php run console:test-command
+$app->add(new \JollyBlueMan\Console\Command\TestCommand());
 
 $app->run();
