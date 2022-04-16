@@ -13,4 +13,12 @@ class ConsoleCommand extends \Symfony\Component\Console\Command\Command
 
         parent::__construct();
     }
+
+    public function thinkingAboutIt(): \Generator
+    {
+        foreach ([".", ".", "."] as $step) {
+            yield $step;
+            sleep(1);
+        }
+    }
 }

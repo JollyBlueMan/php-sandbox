@@ -43,13 +43,13 @@ class GreetCommand extends ConsoleCommand
             $section = $output->section();
 
             $section->write(Message::retrieve("greet.event.a"));
-            sleep(1);
+            sleep(2);
 
             $section->overwrite(Message::retrieve("greet.event.b"));
-            sleep(1);
+            sleep(2);
 
             $section->overwrite(Message::retrieve("greet.event.c"));
-            sleep(1);
+            sleep(2);
 
             $section->clear();
         }

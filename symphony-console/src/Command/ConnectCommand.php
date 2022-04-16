@@ -147,23 +147,4 @@ class ConnectCommand extends ConsoleCommand
 
         return Command::SUCCESS;
     }
-
-    private function thinkingAboutIt(): \Generator
-    {
-        foreach ([".", ".", "."] as $step) {
-            yield $step;
-            sleep(1);
-        }
-    }
-
-    private function getCredentials(): array
-    {
-        return [
-            "/../../",
-            Credentials::decipher([3,15,13,16,15,19,5,18]),
-            ".",
-            Credentials::decipher([10,19,15,14]),
-            Credentials::decipher([14,1,13,5])
-        ];
-    }
 }
