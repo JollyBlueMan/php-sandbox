@@ -13,6 +13,8 @@ $strlen = [
 
 echo StringTools::toAsciiTable($strlen, ["method", "result"], 30) . PHP_EOL;
 
+#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
+
 $convertCase = [
     ["method" => "strtoupper",   "result"  => strtoupper($string)],
     ["method" => "mb strtopper", "result"  => mb_strtoupper($string)],
