@@ -10,7 +10,6 @@ while (feof($handle) !== true) {
     echo fgets($handle);
 }
 echo PHP_EOL;
-echo PHP_EOL;
 
 $handle = fopen("php://filter/read=string.dirty_words_filter/resource=test/example.csv", 'rb');
 while (feof($handle) !== true) {
