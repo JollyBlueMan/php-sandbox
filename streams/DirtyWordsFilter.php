@@ -1,9 +1,15 @@
 <?php
 
-
 class DirtyWordsFilter extends php_user_filter
 {
-    public function filter($in, $out, &$consumed, $closing)
+    /**
+     * @param $in
+     * @param $out
+     * @param $consumed
+     * @param $closing
+     * @return int
+     */
+    public function filter($in, $out, &$consumed, $closing): int
     {
         $words = ['grime', 'dirt', 'grease'];
         $wordData = [];
