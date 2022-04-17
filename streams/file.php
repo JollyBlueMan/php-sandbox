@@ -29,14 +29,12 @@ fclose($source);
 
 #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
 
-// this creates 'encrypted.txt' containing the data encoded by rot13
+// create 'encrypted.txt' containing the data encoded by rot13
 file_put_contents("php://filter/write=string.rot13/resource=encrypted.txt", "P455W0RD123");
 
 #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
 
-# readfile("php://filter/read=string.toupper/resource=https://jollyblueman.com");
-# readfile("php://filter/resource=https://jollyblueman.com");
-
+// read a remote file and change the case
 $i = 0;
 $handle = fopen("php://filter/read=string.toupper/resource=https://jollyblueman.com", 'rb');
 while ($i < 10) {
