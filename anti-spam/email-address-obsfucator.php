@@ -1,7 +1,13 @@
 <?php
 /**
- * Last found:
+ * About this script
+ -=-=-=--=-=-=-=-=-=--=
+
+ Last found:
      https://dimentech.com/assets/obfuscator.html (04/06/22)
+
+ Originally found:
+    http://www.jottings.com/obfuscator/
 
  License:
      This tool was originally conceived and written by Tim Williams of <a href="https://arizona.edu" target="_blank">The University of Arizona</a>.
@@ -15,9 +21,14 @@
      <b>This code is distributed as freeware, provided the authors' credits etc remain exactly as shown.</b>
 
  Notes:
-     The original snippet had some deprecated features & wasn't PSR friendly, so I've updated that!
-
+     I've made some updates:
+      - Updated deprecated php
+      - Aimed for PSR friendliness
+      - Swapped to heredoc for javascript
+      - Tidied up javascript
  * */
+
+echo munge('hello@jollyblueman.com');
 
 function munge($address): string
 {
@@ -41,15 +52,16 @@ function munge($address): string
     $cipher = $mixedKey;
     $shift = strlen($address);
 
-    $txt = "<script type=\"text/javascript\">\n" .
-        "<!-"."-\n" .
-        "// Email obfuscator script 2.1 by Tim Williams, University of Arizona\n".
-        "// Random encryption key feature by Andrew Moulden, Site Engineering Ltd\n".
-        "// PHP version coded by Ross Killen, Celtic Productions Ltd\n".
-        "// This code is freeware provided these six comment lines remain intact\n".
-        "// A wizard to generate this code is at http://www.jottings.com/obfuscator/\n".
-        "// The PHP code may be obtained from http://www.celticproductions.net/\n\n"
-    ;
+    $txt = <<<EOD
+    <script>
+        // Email obfuscator script 2.1 by Tim Williams, University of Arizona
+        // Random encryption key feature by Andrew Moulden, Site Engineering Ltd
+        // PHP version coded by Ross Killen, Celtic Productions Ltd
+        // This code is freeware provided these six comment lines remain intact
+        // A wizard to generate this code is at http://www.jottings.com/obfuscator/
+        // The PHP code may be obtained from http://www.celticproductions.net/
+        
+    EOD;
 
     for ($j = 0; $j < strlen($address); $j++) {
         if (strpos($cipher,$address[$j]) == -1) {
@@ -61,26 +73,24 @@ function munge($address): string
         }
     }
 
-    $txt .= "\ncoded = \"" . $coded . "\"\n" .
-        " key = \"".$cipher."\"\n".
-        " shift=coded.length\n".
-        " link=\"\"\n".
-        " for (i = 0; i < coded.length; i++) {\n" .
-        " if (key.indexOf(coded.charAt(i))==-1) {\n" .
-        " ltr = coded.charAt(i)\n" .
-        " link += (ltr)\n" .
-        " }\n" .
-        " else { \n".
-        " ltr = (key.indexOf(coded.charAt(i))-shift+key.length) % key.length\n".
-        " link += (key.charAt(ltr))\n".
-        " }\n".
-        " }\n".
-        "document.write(\"<a href='mailto:\"+link+\"'>\"+link+\"</a>\")\n" .
-        "\n".
-        "//-"."->\n" .
-        "<" . "/script><noscript>N/A" .
-        "<"."/noscript>"
-    ;
+    $txt .= <<<EOD
+         coded = "$coded";
+         key = "$cipher";
+         shift = coded.length;
+         link = "";
+         for (i = 0; i < coded.length; i++) {
+            if (key.indexOf(coded.charAt(i)) == -1) {
+                ltr = coded.charAt(i);
+                link += (ltr);
+            } else { 
+                ltr = (key.indexOf(coded.charAt(i)) - shift + key.length) % key.length;
+                link += (key.charAt(ltr));
+            }
+         }
+        document.write("<a href='mailto:" + link + "'>" + link + "</a>");
+    </script>
+    <noscript>N/A</noscript>
+    EOD;
 
     return $txt;
 }
