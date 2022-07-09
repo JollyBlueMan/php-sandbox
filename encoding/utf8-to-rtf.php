@@ -1,10 +1,13 @@
 <?php
 
 /**
-* Adapted version of this to work more modernly https://www.php.net/manual/en/function.ord.php#124749 
-*
-*
-* /
+ * Converts accented characters to RTF safe non-accented characters
+ *
+ * Adapted version of this https://www.php.net/manual/en/function.ord.php#124749
+ */
+
+$contents = ""; // some RTF file
+$characters = []; // array of special characters
 
 foreach ($characters as $character) {
     $result = null;
